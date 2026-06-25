@@ -10,6 +10,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## String
 |  |
 | ------- |
+| [0003-longest-substring-without-repeating-characters](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0003-longest-substring-without-repeating-characters) |
 | [0412-fizz-buzz](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0412-fizz-buzz) |
 ## Simulation
 |  |
@@ -37,4 +38,12 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0215-kth-largest-element-in-an-array](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0215-kth-largest-element-in-an-array) |
+## Hash Table
+|  |
+| ------- |
+| [0003-longest-substring-without-repeating-characters](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0003-longest-substring-without-repeating-characters) |
+## Sliding Window
+|  |
+| ------- |
+| [0003-longest-substring-without-repeating-characters](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0003-longest-substring-without-repeating-characters) |
 <!---LeetCode Topics End-->
