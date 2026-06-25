@@ -22,6 +22,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0033-search-in-rotated-sorted-array](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0033-search-in-rotated-sorted-array) |
 | [0056-merge-intervals](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0056-merge-intervals) |
+| [0153-find-minimum-in-rotated-sorted-array](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0153-find-minimum-in-rotated-sorted-array) |
 | [0215-kth-largest-element-in-an-array](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0215-kth-largest-element-in-an-array) |
 ## Divide and Conquer
 |  |
@@ -60,4 +61,5 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0033-search-in-rotated-sorted-array](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0033-search-in-rotated-sorted-array) |
+| [0153-find-minimum-in-rotated-sorted-array](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0153-find-minimum-in-rotated-sorted-array) |
 <!---LeetCode Topics End-->
