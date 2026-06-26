@@ -14,13 +14,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup C++ Compiler
-        uses: rlalik/setup-cpp-compiler@v1.2
-        with:
-          compiler: gcc-latest
+      - name: Verify compiler
+        run: g++ --version
 
       - name: Build
-        run: g++ main.cpp -o app
+        run: g++ -Wall -o app main.cpp
 
       - name: Run
         run: ./app
