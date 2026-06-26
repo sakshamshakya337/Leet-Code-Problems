@@ -6,6 +6,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Math
 |  |
 | ------- |
+| [0326-power-of-three](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0326-power-of-three) |
 | [0412-fizz-buzz](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0412-fizz-buzz) |
 ## String
 |  |
@@ -87,4 +88,8 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0347-top-k-frequent-elements](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0347-top-k-frequent-elements) |
+## Recursion
+|  |
+| ------- |
+| [0326-power-of-three](https://github.com/sakshamshakya337/Leet-Code-Problems/tree/master/0326-power-of-three) |
 <!---LeetCode Topics End-->
