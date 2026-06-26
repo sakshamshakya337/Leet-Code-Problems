@@ -24,17 +24,31 @@ jobs:
           total=0
           passed=0
 
-          for file in $(find . -name "*.cpp" -not -path "./.github/*"); do
+          # Standard headers that cover 99% of LeetCode problems
+          HEADER='#include <bits/stdc++.h>
+          using namespace std;'
+
+          for file in $(find . -name "*.cpp" -not -path "./.github/*" -not -name "main.cpp"); do
             total=$((total + 1))
             echo "──────────────────────────────"
             echo "Compiling: $file"
-            if g++ -Wall -std=c++17 -o /tmp/leetcode_out "$file" 2>&1; then
+
+            # Create a temp file: inject headers + solution + empty main
+            TMPFILE=$(mktemp /tmp/leetcode_XXXXXX.cpp)
+            echo "$HEADER" > "$TMPFILE"
+            cat "$file" >> "$TMPFILE"
+            echo "" >> "$TMPFILE"
+            echo "int main() { return 0; }" >> "$TMPFILE"
+
+            if g++ -Wall -std=c++17 -o /tmp/leetcode_out "$TMPFILE" 2>&1; then
               echo "✅ PASS: $file"
               passed=$((passed + 1))
             else
               echo "❌ FAIL: $file"
               failed=1
             fi
+
+            rm -f "$TMPFILE"
           done
 
           echo "══════════════════════════════"
@@ -42,6 +56,6 @@ jobs:
           echo "══════════════════════════════"
           exit $failed
 
-      - name: Summary
+      - name: All solutions passed
         if: success()
-        run: echo "🎉 All solutions compiled successfully!"
+        run: echo "🎉 All LeetCode solutions compiled successfully!"
