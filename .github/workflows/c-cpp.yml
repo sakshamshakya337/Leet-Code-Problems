@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: LeetCode CI
 
 on:
   push:
@@ -14,11 +14,34 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Verify compiler
+      - name: Verify Compiler
         run: g++ --version
 
-      - name: Build
-        run: g++ -Wall -o app main.cpp
+      - name: Compile All LeetCode Solutions
+        run: |
+          echo "Scanning for .cpp files..."
+          failed=0
+          total=0
+          passed=0
 
-      - name: Run
-        run: ./app
+          for file in $(find . -name "*.cpp" -not -path "./.github/*"); do
+            total=$((total + 1))
+            echo "──────────────────────────────"
+            echo "Compiling: $file"
+            if g++ -Wall -std=c++17 -o /tmp/leetcode_out "$file" 2>&1; then
+              echo "✅ PASS: $file"
+              passed=$((passed + 1))
+            else
+              echo "❌ FAIL: $file"
+              failed=1
+            fi
+          done
+
+          echo "══════════════════════════════"
+          echo "Results: $passed / $total passed"
+          echo "══════════════════════════════"
+          exit $failed
+
+      - name: Summary
+        if: success()
+        run: echo "🎉 All solutions compiled successfully!"
