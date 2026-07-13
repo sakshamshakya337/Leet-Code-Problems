@@ -1,0 +1,88 @@
+name: LeetCode CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Clang
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang
+
+      - name: Show Versions
+        run: |
+          echo "Node:"
+          node --version
+          echo
+          echo "Clang:"
+          clang++ --version
+
+      - name: Compile all LeetCode Solutions
+        shell: bash
+        run: |
+
+          shopt -s globstar nullglob
+
+          total=0
+          passed=0
+          failed=0
+
+          for file in **/*.cpp
+          do
+
+            [[ "$file" == .github/* ]] && continue
+
+            total=$((total+1))
+
+            echo ""
+            echo "==========================================="
+            echo "Checking: $file"
+            echo "==========================================="
+
+            if clang++ \
+                -std=c++20 \
+                -Wall \
+                -Wextra \
+                -Wpedantic \
+                -fsyntax-only \
+                -include .github/leetcode_mock.hpp \
+                "$file"
+            then
+                echo "PASS"
+                passed=$((passed+1))
+            else
+                echo "::error file=$file::Compilation failed"
+                failed=$((failed+1))
+            fi
+
+          done
+
+          echo ""
+          echo "==========================================="
+          echo "Total : $total"
+          echo "Passed: $passed"
+          echo "Failed: $failed"
+          echo "==========================================="
+
+          if [ "$failed" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Success
+        if: success()
+        run: echo "🎉 All LeetCode solutions passed syntax checking."
