@@ -2,60 +2,84 @@ name: LeetCode CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  compile:
+    runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Verify Compiler
-        run: g++ --version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
 
-      - name: Compile All LeetCode Solutions
+      - name: Install Clang
         run: |
-          echo "Scanning for .cpp files..."
-          failed=0
+          sudo apt-get update
+          sudo apt-get install -y clang
+
+      - name: Show versions
+        run: |
+          clang++ --version
+          node --version
+
+      - name: Compile all LeetCode solutions
+        shell: bash
+        run: |
+
+          shopt -s globstar nullglob
+
           total=0
           passed=0
+          failed=0
 
-          # Standard headers that cover 99% of LeetCode problems
-          HEADER='#include <bits/stdc++.h>
-          using namespace std;'
+          for file in **/*.cpp
+          do
 
-          for file in $(find . -name "*.cpp" -not -path "./.github/*" -not -name "main.cpp"); do
-            total=$((total + 1))
-            echo "──────────────────────────────"
-            echo "Compiling: $file"
+            [[ "$file" == .github/* ]] && continue
 
-            # Create a temp file: inject headers + solution + empty main
-            TMPFILE=$(mktemp /tmp/leetcode_XXXXXX.cpp)
-            echo "$HEADER" > "$TMPFILE"
-            cat "$file" >> "$TMPFILE"
-            echo "" >> "$TMPFILE"
-            echo "int main() { return 0; }" >> "$TMPFILE"
+            total=$((total+1))
 
-            if g++ -Wall -std=c++17 -o /tmp/leetcode_out "$TMPFILE" 2>&1; then
-              echo "✅ PASS: $file"
-              passed=$((passed + 1))
+            echo ""
+            echo "===================================="
+            echo "Compiling $file"
+
+            TMP=$(mktemp --suffix=.cpp)
+
+            cat .github/leetcode_mock.hpp > "$TMP"
+            echo >> "$TMP"
+            cat "$file" >> "$TMP"
+            echo >> "$TMP"
+            echo "int main(){return 0;}" >> "$TMP"
+
+            if clang++ \
+                -std=c++20 \
+                -Wall \
+                -Wextra \
+                -pedantic \
+                "$TMP" \
+                -o /tmp/a.out
+            then
+                echo "PASS"
+                passed=$((passed+1))
             else
-              echo "❌ FAIL: $file"
-              failed=1
+                echo "FAIL"
+                failed=$((failed+1))
             fi
 
-            rm -f "$TMPFILE"
+            rm "$TMP"
+
           done
 
-          echo "══════════════════════════════"
-          echo "Results: $passed / $total passed"
-          echo "══════════════════════════════"
-          exit $failed
+          echo ""
+          echo "=============================="
+          echo "Passed : $passed"
+          echo "Failed : $failed"
+          echo "Total  : $total"
+          echo "=============================="
 
-      - name: All solutions passed
-        if: success()
-        run: echo "🎉 All LeetCode solutions compiled successfully!"
+          test $failed -eq 0
